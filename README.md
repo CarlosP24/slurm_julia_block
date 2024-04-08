@@ -1,5 +1,11 @@
 # Slurm Julia Block
-Basic building block for julia multi-core paralellization in a slurm cluster
+Basic building block for julia multi-core paralellization in a slurm cluster.
+
+Once set up just run
+
+````
+sbatch job.slurm ARGUMENTS
+````
 
 ## Usage
 ### Slurm manager
