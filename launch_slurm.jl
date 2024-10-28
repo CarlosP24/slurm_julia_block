@@ -3,7 +3,7 @@
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=224
 #SBATCH --cpus-per-task=1
-#SBATCH --mem-per-cpu=2G
+#SBATCH --distribution=cyclic
 #SBATCH --output="slurm.out/%j.out"
 
 ## Julia setup
