@@ -5,9 +5,11 @@
 #     include("functions.jl")
 # end
 
-using Quantica
-using ProgressMeter
-include("functions.jl")
+@everywhere begin
+    using Quantica
+    using ProgressMeter
+    include("functions.jl")
+end
 
 ## Run 
 LDOS = mwe()
