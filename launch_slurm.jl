@@ -17,7 +17,7 @@ addprocs(max(0, maxprocs + 1 - nworkers()))
 # end 
 
 ## Run code
-include("src/main.jl")
+include(@__DIR__*"src/main.jl")
 
 ## Clean up
 rmprocs(workers()...)
