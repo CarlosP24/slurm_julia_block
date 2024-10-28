@@ -1,4 +1,4 @@
-#!/bin/bash julia --project
+#!/usr/bin/env julia --project
 ## Slurm header
 #SBATCH --partition=most
 #SBATCH --ntasks=192
