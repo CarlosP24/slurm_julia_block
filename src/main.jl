@@ -1,15 +1,10 @@
-using Distributed
-@everywhere begin
-    using Pkg; Pkg.activate(".")
-    Pkg.instantiate(); Pkg.precompile()
-end
-
+## Load
 @everywhere begin
     using Quantica
-    include("src/functions.jl")
+    using ProgressMeter
+    include("functions.jl")
 end
 
+## Run 
 LDOS = mwe()
 save("LDOS.jld2", "LDOS", LDOS)
-
-rmprocs(workers()...)
