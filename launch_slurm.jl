@@ -1,14 +1,14 @@
 #!/usr/bin/env julia --project
 ## Slurm header
-#SBATCH --partition=most
-#SBATCH --ntasks=192
+#SBATCH --partition=esbirro
+#SBATCH --ntasks=64
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
 ## Julia setup
 using Distributed
-const maxprocs = 96
+const maxprocs = 32
 addprocs(max(0, maxprocs + 1 - nworkers()))
 
 @everywhere begin
