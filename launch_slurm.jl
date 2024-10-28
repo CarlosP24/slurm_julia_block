@@ -2,6 +2,7 @@
 ## Slurm header
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=224
+#SBATCH --noodes=7
 #SBATCH --cpus-per-task=1
 #SBATCH --distribution=cyclic
 #SBATCH --output="slurm.out/%j.out"
