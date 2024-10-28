@@ -1,4 +1,4 @@
-#!/usr/bin/env julia --project
+#!/usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=64
