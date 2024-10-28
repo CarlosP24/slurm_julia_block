@@ -8,7 +8,7 @@
 
 ## Julia setup
 using Distributed
-const maxprocs = 112
+const maxprocs = 96
 addprocs(max(0, maxprocs + 1 - nworkers()))
 
 @everywhere begin
