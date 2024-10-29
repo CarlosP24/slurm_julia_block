@@ -16,16 +16,17 @@ using Pkg
 Pkg.resolve()
 Pkg.instantiate()
 
+using JLD2, Quantica, ProgressMeter
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
 
-@everywhere script_path = ENV["SLURM_SUBMIT_DIR"]
+script_path = ENV["SLURM_SUBMIT_DIR"]
 
-@everywhere begin
-    using Pkg
-    Pkg.activate(script_path)
-    Pkg.instantiate()
-  end
+# @everywhere begin
+#     using Pkg
+#     Pkg.activate(script_path)
+#     Pkg.instantiate()
+# end
 
 ## Run code
 include("$(script_path)/src/main.jl")
