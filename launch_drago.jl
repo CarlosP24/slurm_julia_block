@@ -1,7 +1,7 @@
-#!/usr/bin/env -S julia --project 
+#!/usr/bin/env -S julia --project
 ## Slurm header
-#SBATCH --partition=most
-#SBATCH --ntasks-per-node=192
+#SBATCH --partition=special
+#SBATCH --ntasks-per-node=48
 #SBATCH --nodes=2
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
@@ -16,7 +16,6 @@ script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
 
-
 ## Run code
 #include("$(script_path)/src/main.jl")
 @everywhere using Sockets
@@ -28,7 +27,6 @@ results = fetch.(hostnames)
 
 # Print results
 println("Hostnames of workers: ", results)
-
 
 ## Clean up
 rmprocs(workers()...)
