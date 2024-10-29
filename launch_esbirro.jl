@@ -19,6 +19,10 @@ Pkg.instantiate()
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
+@everywhere begin
+    using Pkg 
+    Pkg.instantiate()
+end
 
 ## Run code
 include("$(script_path)/src/main.jl")
