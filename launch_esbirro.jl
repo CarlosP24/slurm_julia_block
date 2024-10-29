@@ -20,7 +20,11 @@ Pkg.instantiate()
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
 
-using Quantica, JLD2, ProgressMeter
+@everywhere begin
+    using Pkg
+    Pkg.activate(script_path)
+    Pkg.instantiate()
+  end
 
 ## Run code
 include("$(script_path)/src/main.jl")
