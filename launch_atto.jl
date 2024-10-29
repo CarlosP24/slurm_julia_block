@@ -18,8 +18,8 @@ addprocs(max(0, maxprocs + 1 - nworkers()))
 
 ## Run code
 #include("$(script_path)/src/main.jl")
-@eveywhere using Sockets
-@everyhwere println("This code is running on: $(gethostname())")
+@everywhere using Sockets
+@everywhere println("This code is running on: $(gethostname())")
 
 
 ## Clean up
