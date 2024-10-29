@@ -1,8 +1,7 @@
 #!/usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=most
-#SBATCH --ntasks-per-node=96
-#SBATCH --nodes=2
+#SBATCH --ntasks=384
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
@@ -20,7 +19,14 @@ addprocs(max(0, maxprocs + 1 - nworkers()))
 ## Run code
 #include("$(script_path)/src/main.jl")
 @everywhere using Sockets
-@everywhere println("This code is running on: $(gethostname())")
+# Get hostnames from each worker
+hostnames = [@spawn gethostname() for _ in 1:nworkers()]
+
+# Collect the results
+results = fetch.(hostnames)
+
+# Print results
+println("Hostnames of workers: ", results)
 
 
 ## Clean up
