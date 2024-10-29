@@ -6,7 +6,7 @@
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
-run(`export SCRIPT_PATH=%$(scontrol show job %$SLURM_JOBID | awk -F='/Command=/{print $2}')`)
+script_path = read(`scontrol show job $ENV["SLURM_JOBID"] | awk -F'Command=' '{print $2}'`, String)
 
 ## Julia setup
 using Distributed
@@ -15,7 +15,7 @@ addprocs(max(0, maxprocs + 1 - nworkers()))
 
 ## Run code
 #include("src/main.jl")
-println(ENV["SCRIPT_PATH"])
+println(script_path)
 
 ## Clean up
 rmprocs(workers()...)
