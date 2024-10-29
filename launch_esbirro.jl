@@ -42,7 +42,7 @@ function mwe()
     ωrng = range(-1, 1, length = 100) .+ 1e-3im
 
     pts = Iterators.product(ωrng, trng)
-    LDOS = @showprogress pmap(pts) do pt 
+    LDOS = pmap(pts) do pt 
         ω, t = pt
         return ldos(g[cells = (1, 1)])(ω; t)
     end
