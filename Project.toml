@@ -1,4 +1,5 @@
 [deps]
+ClusterManagers = "34f1f09b-3a8b-5176-ab39-66d58a4d544e"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 Quantica = "ae5ea0c6-3f5e-46a2-bc28-a7c4c7a4773c"

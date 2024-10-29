@@ -1,4 +1,4 @@
-#!/usr/bin/env -S julia --project --machine-file=$(ENV"SLURM_NODEFILE"])
+#!/usr/bin/env -S julia --project 
 ## Slurm header
 #SBATCH --partition=most
 #SBATCH --ntasks-per-node=192
@@ -13,10 +13,10 @@ awk_cmd = `awk -F'Command=' '{print $2}'`
 script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
-using Distributed
+using Distributed, ClusterManagers
 const maxprocs = 192
-addprocs(max(0, maxprocs + 1 - nworkers()))
-#addprocs(SlurmManager())
+#addprocs(max(0, maxprocs + 1 - nworkers()))
+addprocs(SlurmManager())
 
 
 ## Run code
