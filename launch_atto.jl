@@ -13,10 +13,11 @@ awk_cmd = `awk -F'Command=' '{print $2}'`
 script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
-using Distributed, ClusterManagers
+using Distributed, SlurmClusterManager
 const maxprocs = 192
 #addprocs(max(0, maxprocs + 1 - nworkers()))
 #addprocs(SlurmManager(max(0, maxprocs + 1 - nworkers())))
+addprocs(SlurmManager())
 
 
 ## Run code
