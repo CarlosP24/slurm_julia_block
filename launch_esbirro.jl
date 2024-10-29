@@ -13,7 +13,7 @@ scontrol_cmd = `scontrol show job $(ENV["SLURM_JOBID"])`
 awk_cmd = `awk -F'Command=' '{print $2}'`
 
 # Use pipeline to pass the output of scontrol_cmd to awk_cmd
-script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> dirname
+script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
 using Distributed
