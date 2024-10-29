@@ -17,7 +17,7 @@ script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
 using Distributed
-const maxprocs = 32
+const maxprocs = 64
 addprocs(max(0, maxprocs + 1 - nworkers()))
 
 ## Run code
