@@ -14,8 +14,8 @@ script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 ## Julia setup
 using Distributed, ClusterManagers
 const maxprocs = 32
-#addprocs(max(0, maxprocs + 1 - nworkers()))
-addprocs(SlurmManager(max(0, maxprocs + 1 - nworkers())))
+addprocs(max(0, maxprocs + 1 - nworkers()))
+#addprocs(SlurmManager(max(0, maxprocs + 1 - nworkers())))
 
 
 ## Run code
