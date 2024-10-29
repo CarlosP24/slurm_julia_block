@@ -6,18 +6,16 @@
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
+run(`export SCRIPT_PATH=$(scontrol show job $SLURM_JOBID | awk -F='/Command=/{print $2}')`)
+
 ## Julia setup
 using Distributed
 const maxprocs = 32
 addprocs(max(0, maxprocs + 1 - nworkers()))
 
-# @everywhere begin
-#     using Pkg
-#     Pkg.instantiate(); Pkg.precompile()
-# end 
-
 ## Run code
-include("src/main.jl")
+#include("src/main.jl")
+println(ENV["SCRIPT_PATH"])
 
 ## Clean up
 rmprocs(workers()...)
