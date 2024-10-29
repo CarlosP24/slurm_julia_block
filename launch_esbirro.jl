@@ -16,7 +16,8 @@ using Distributed, ClusterManagers
 const maxprocs = 32
 #addprocs(max(0, maxprocs + 1 - nworkers()))
 #addprocs(SlurmManager(max(0, maxprocs + 1 - nworkers())))
-addprocs(parse(Int, ENV["SLURM_NTASKS"]))
+#addprocs(parse(Int, ENV["SLURM_NTASKS"]))
+addprocs(SlurmManager())
 
 
 ## Run code
