@@ -14,9 +14,9 @@ script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 ## Julia setup
 using Distributed
 const maxprocs = 32
-n_nodes = parse(Int, ENV["SLURM_NNODES"]) 
-tasks_per_node = 16  
-addprocs(n_nodes * tasks_per_node)
+#addprocs(max(0, maxprocs + 1 - nworkers()))
+addprocs(SlurmManager())
+
 
 ## Run code
 #include("$(script_path)/src/main.jl")
