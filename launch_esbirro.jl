@@ -30,7 +30,9 @@ script_path = ENV["SLURM_SUBMIT_DIR"]
 
 ## Run code
 # include("$(script_path)/src/main.jl")
-
+@everywhere begin
+    using Quantica
+end
 function mwe()
     lat = LP.honeycomb();
     model= @hopping((; t = 2.7) -> t*I);
