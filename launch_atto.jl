@@ -15,7 +15,9 @@ script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 ## Julia setup
 using Distributed
 const maxprocs = 192
-addprocs(max(0, maxprocs + 1 - nworkers()))
+#addprocs(max(0, maxprocs + 1 - nworkers()))
+addprocs(SlurmManager())
+
 
 ## Run code
 #include("$(script_path)/src/main.jl")
