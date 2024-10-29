@@ -12,9 +12,11 @@ awk_cmd = `awk -F'Command=' '{print $2}'`
 script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
-using Distributed, SlurmClusterManager, Pkg
+using Pkg
 Pkg.resolve()
 Pkg.instantiate()
+
+using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
 
 
