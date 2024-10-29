@@ -1,4 +1,4 @@
-#!/usr/bin/env -S julia --project
+#!/usr/bin/env -S julia --project --machine-file=$SLURM_NODEFILE
 ## Slurm header
 #SBATCH --partition=most
 #SBATCH --ntasks-per-node=192
