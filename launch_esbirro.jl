@@ -10,7 +10,6 @@
 # scontrol_cmd = `scontrol show job $(ENV["SLURM_JOBID"])`
 # awk_cmd = `awk -F'Command=' '{print $2}'`
 # script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
-script_path = ENV["SLURM_SUBMIT_DIR"]
 
 ## Julia setup
 using Pkg
@@ -19,6 +18,8 @@ Pkg.instantiate()
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
+
+@everywhere script_path = ENV["SLURM_SUBMIT_DIR"]
 
 @everywhere begin
     using Pkg
