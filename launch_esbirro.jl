@@ -22,6 +22,5 @@ addprocs(max(0, maxprocs + 1 - nworkers()))
 @everywhere using Sockets
 @everywhere println("This code is running on: $(gethostname())")
 
-@everyhwere
 ## Clean up
 rmprocs(workers()...)
