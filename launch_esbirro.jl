@@ -5,6 +5,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
+#SBATCH --prolog="prolog.sh"
 
 # Get script_path to use include
 scontrol_cmd = `scontrol show job $(ENV["SLURM_JOBID"])`
