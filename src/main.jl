@@ -4,7 +4,7 @@
 #     using ProgressMeter
 #     include("functions.jl")
 # end
-
+using JLD2
 @everywhere begin
     using Quantica
     using ProgressMeter

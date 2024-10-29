@@ -13,7 +13,7 @@ scontrol_cmd = `scontrol show job $(ENV["SLURM_JOBID"])`
 awk_cmd = `awk -F'Command=' '{print $2}'`
 
 # Use pipeline to pass the output of scontrol_cmd to awk_cmd
-script_path = read(pipeline(scontrol_cmd, awk_cmd), String)
+script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> basename
 
 ## Julia setup
 using Distributed
@@ -21,8 +21,7 @@ const maxprocs = 32
 addprocs(max(0, maxprocs + 1 - nworkers()))
 
 ## Run code
-#include("src/main.jl")
-println(script_path)
+include("$(script_path)/src/main.jl")
 
 ## Clean up
 rmprocs(workers()...)
