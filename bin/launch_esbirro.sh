@@ -1,5 +1,5 @@
 #!/bin/bash
-source ../config/prologue.sh
+source config/prologue.sh
 sbatch <<EOT
 #!/bin/bash
 ## Slurm header
@@ -9,5 +9,5 @@ sbatch <<EOT
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
-julia --project launcher.jl
+julia --project bin/launcher.jl
 EOT
