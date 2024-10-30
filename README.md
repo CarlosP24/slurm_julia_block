@@ -4,9 +4,9 @@ Minimal working example of a distributed julia calculation across different slur
 Makes use of [Distributed.jl](https://github.com/JuliaLang/Distributed.jl) and [SlurmClusterManager.jl](https://github.com/kleinhenz/SlurmClusterManager.jl).
 
 ## Usage
-All code should reside in the `src` directory. It must run through `src/main.jl`. This script can use relative path names and be written just taking into account the usual stuff for distributed computation (`@evereywhere` and so).
+All code should reside in the `src` directory. It must run through `src/main.jl`. This script can use relative path names and be written just taking into account the usual stuff for distributed computation (`@everywhere` and so).
 
-All slurm parameters are in a scritp `launch_cluster.sh` that looks like
+All slurm parameters are in a script `launch_cluster.sh` that looks like
 `````
 #!/bin/bash
 source prolog.sh
