@@ -24,10 +24,7 @@ Pkg.precompile()
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
-@everywhere begin
-    using Pkg
-    Pkg.instantiate()
-end
+@everywhere println("Active project is $(Base.active_project())")
 
 ## Run code
 include("$(script_path)/src/main.jl")
