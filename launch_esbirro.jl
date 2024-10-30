@@ -11,7 +11,6 @@ script_path = ENV["SLURM_SUBMIT_DIR"]
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
-@everywhere println("Active project is $(Base.active_project())")
 
 ## Run code
 include("$(script_path)/src/main.jl")
