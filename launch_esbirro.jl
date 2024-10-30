@@ -1,4 +1,4 @@
-#! source prolog.sh; /usr/bin/env -S julia --project
+#!/usr/bin/env -S source prolog.sh; julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=64
