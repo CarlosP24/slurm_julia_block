@@ -14,18 +14,23 @@
 ## Julia setup
 script_path = ENV["SLURM_SUBMIT_DIR"]
 available_workers = parse(Int, ENV["SLURM_NTASKS"])
+depot_path = "/local/cap/.julia_depot"
+ENV["JULIA_DEPOT_PATH"] = depot_path
 
 using Pkg
 Pkg.resolve()
 Pkg.instantiate()
+Pkg.precompile()
 
 using Distributed, ClusterManagers
 addprocs_slurm(available_workers)
+@everywhere global ENV["JULIA_DEPOT_PATH"] = depot_path
+
 ## Run code
-#include("$(script_path)/src/main.jl")
-@everywhere using Sockets
-hostnames = [@spawn gethostname() for _ in 1:nworkers()]
-results = fetch.(hostnames)
-println("Hostnames of workers: ", results)
+include("$(script_path)/src/main.jl")
+# @everywhere using Sockets
+# hostnames = [@spawn gethostname() for _ in 1:nworkers()]
+# results = fetch.(hostnames)
+# println("Hostnames of workers: ", results)
 ## Clean up
 rmprocs(workers()...)

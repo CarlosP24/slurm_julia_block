@@ -1,4 +1,6 @@
 @everywhere begin
+    using Quantica
+    using ProgressMeter
     include("functions.jl")
 end
 ## Run 
