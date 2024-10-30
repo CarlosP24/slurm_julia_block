@@ -7,28 +7,20 @@
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
-# Get script_path to use include
-scontrol_cmd = `scontrol show job $(ENV["SLURM_JOBID"])`
-awk_cmd = `awk -F'Command=' '{print $2}'`
-script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
-
 ## Julia setup
+script_path = ENV["SLURM_SUBMIT_DIR"]
+
+using Pkg
+Pkg.instantiate()
+Pkg.resolve()
+Pkg.precompile()
+
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
-
+@everywhere println("Active project is $(Base.active_project())")
 
 ## Run code
-#include("$(script_path)/src/main.jl")
-@everywhere using Sockets
-# Get hostnames from each worker
-hostnames = [@spawn gethostname() for _ in 1:nworkers()]
-
-# Collect the results
-results = fetch.(hostnames)
-
-# Print results
-println("Hostnames of workers: ", results)
-
+include("$(script_path)/src/main.jl")
 
 ## Clean up
 rmprocs(workers()...)
