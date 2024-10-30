@@ -13,7 +13,7 @@
 
 ## Julia setup
 script_path = ENV["SLURM_SUBMIT_DIR"]
-available_workers = parse(Int, ENV["SLURM_NTASKS"])
+#available_workers = parse(Int, ENV["SLURM_NTASKS"])
 depot_path = "$(script_path)/.julia_depot"
 run(`mkdir -p $(depot_path)`)
 ENV["JULIA_DEPOT_PATH"] = depot_path
@@ -22,8 +22,8 @@ Pkg.resolve()
 Pkg.instantiate()
 Pkg.precompile()
 
-using Distributed, ClusterManagers
-addprocs_slurm(available_workers)
+using Distributed, SlurmClusterManager
+addprocs(SlurmManager())
 @everywhere global ENV["JULIA_DEPOT_PATH"] = depot_path
 
 ## Run code
