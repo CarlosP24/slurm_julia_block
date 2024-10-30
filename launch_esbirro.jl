@@ -1,3 +1,7 @@
+#!/usr/bin/bash -l
+depot_path="$PWD/.julia_depot"
+mkdir -p "$depot_path"
+export JULIA_DEPOT_PATH="$depot_path"
 #!/usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
@@ -14,9 +18,9 @@
 ## Julia setup
 script_path = ENV["SLURM_SUBMIT_DIR"]
 #available_workers = parse(Int, ENV["SLURM_NTASKS"])
-depot_path = "$(script_path)/.julia_depot"
-run(`mkdir -p $(depot_path)`)
-ENV["JULIA_DEPOT_PATH"] = depot_path
+#depot_path = "$(script_path)/.julia_depot"
+#run(`mkdir -p $(depot_path)`)
+#ENV["JULIA_DEPOT_PATH"] = depot_path
 using Pkg
 Pkg.resolve()
 Pkg.instantiate()
