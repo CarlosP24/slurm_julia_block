@@ -19,8 +19,6 @@ using Pkg
 Pkg.resolve()
 Pkg.instantiate()
 
-using DepotDelivery: build
-
 using Distributed, ClusterManagers
 addprocs_slurm(available_workers)
 ## Run code
