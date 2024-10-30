@@ -1,7 +1,3 @@
-#!/usr/bin/bash -l
-depot_path="$PWD/.julia_depot"
-mkdir -p "$depot_path"
-export JULIA_DEPOT_PATH="$depot_path"
 #!/usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
