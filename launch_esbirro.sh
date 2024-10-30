@@ -1,4 +1,7 @@
-#!/usr/bin/env -S source prolog.sh; julia --project
+#!/bin/bash
+source prolog.sh
+sbatch <<EOT
+#!/usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=64
@@ -17,3 +20,5 @@ include("$(script_path)/src/main.jl")
 
 ## Clean up
 rmprocs(workers()...)
+
+EOT
