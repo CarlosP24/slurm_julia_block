@@ -7,7 +7,7 @@ sbatch <<EOT
 #SBATCH --ntasks=384
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
-#SBATCH --output="slurm.out/%j.out"
+#SBATCH --output="logs/%j.out"
 
 julia --project bin/launcher.jl
 EOT

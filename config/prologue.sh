@@ -2,6 +2,7 @@
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 depot_path="$script_dir/../.julia_depot"
 mkdir -p "$depot_path"
+mkdir -p "logs"
 export JULIA_DEPOT_PATH="$depot_path"
 export JULIA_PROJECT="$script_dir/.."
 
