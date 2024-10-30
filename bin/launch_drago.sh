@@ -8,6 +8,7 @@ sbatch <<EOT
 #SBATCH --cpus-per-task=1
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="logs/%j.out"
+#SBATCH --job-name="${PWD##*/}"
 
 julia --project bin/launcher.jl
 EOT
