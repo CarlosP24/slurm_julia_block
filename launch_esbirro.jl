@@ -1,4 +1,4 @@
-#!/usr/bin/env -S julia --project
+#! source prolog.sh /usr/bin/env -S julia --project
 ## Slurm header
 #SBATCH --partition=esbirro
 #SBATCH --ntasks=64
@@ -8,11 +8,6 @@
 
 ## Julia setup
 script_path = ENV["SLURM_SUBMIT_DIR"]
-
-using Pkg
-Pkg.instantiate()
-Pkg.resolve()
-Pkg.precompile()
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
