@@ -24,7 +24,7 @@ Pkg.precompile()
 
 using Distributed, SlurmClusterManager
 addprocs(SlurmManager())
-@everywhere global ENV["JULIA_DEPOT_PATH"] = depot_path
+@everywhere ENV["JULIA_DEPOT_PATH"] = $(ENV["JULIA_DEPOT_PATH"])
 
 ## Run code
 include("$(script_path)/src/main.jl")
