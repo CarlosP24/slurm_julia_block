@@ -1,33 +1,36 @@
 # Slurm Julia Block
-Basic building block for julia multi-core paralellization in a slurm cluster.
+Minimal working example of a distributed julia calculation across different slurm nodes.
 
-Once set up just run
-
-````
-bash job.slurm ARG1 ARG2
-````
+Makes use of [Distributed.jl](https://github.com/JuliaLang/Distributed.jl) and [SlurmClusterManager.jl](https://github.com/kleinhenz/SlurmClusterManager.jl).
 
 ## Usage
-### Slurm manager
-All code should be run in the cluster's access node.
-Make sure you have passwordless access from it to all other nodes.
+All code should reside in the `src` directory. It must run through `src/main.jl`. This script can use relative path names and be written just taking into account the usual stuff for distributed computation (`@evereywhere` and so).
 
-SLURM parameters are set through the header of job.slurm. Use sbatch parameters as needed.
-The ones in this example are the most common:
-- `#SBATCH -p partition_name` chooses the cluster partition you wanna use. `esbirro` shares access with `fiona`, so you can use `fiona`, `esbirro` or `all`.
-- `#SBATCH --nodes=node_number` sets the number of nodes to use in your calculation. `esbirro` and `fiona` have 8 nodes each (use max 7, es1 and f1 should be free)
-- `#SBATCH --nodes=acces_node` tells sbatch not to use the access node for calculations.
-- `#SBATCH --exclusive` tells slurm to run only our calculation in that node.
-- `#SBATCH --output=path` sets the path to send code output.
-- `#SBATCH --error=path` sets the path to send code error messages.
-- `#SBATCH --job-name=$2`changes the job name (that appears on `squeue` and so on) to an argument.
+All slurm parameters are in a scritp `launch_cluster.sh` that looks like
+`````
+#!/bin/bash
+source prolog.sh
+sbatch <<EOT
+#!/bin/bash
+## Slurm header
+#SBATCH --partition=esbirro
+#SBATCH --ntasks=64
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=2G
+#SBATCH --output="slurm.out/%j.out"
 
-There are far many more SBATCH options and you might need them from time to time, check them out [here](https://slurm.schedmd.com/sbatch.html).
-This code also writes the node list to machinefile to be used by the julia code (see below).
+julia --project launcher.jl
+EOT
+`````
 
-### Julia header
-Your julia calculation should start as in MWE.jl. Apart from the usings and includes, it writes the nodelist and wished workers in an understandable way for Distributed.jl.
-It is set to choose the number of workers per node automatically, change it if it does not work properly.
+We just need to do `bash launch_cluster.sh` in an access node.
 
-Don't forget to manually close your nodes at the end of the code. Esbirro might crash if not.
+## Hows and whys
+`prolog.sh` sets up the necessary julia env variables. It points the `JULIA_DEPOT_PATH` and `JULIA_PROJECT` to a common place for all nodes, so the precompiled files and `Manifest.toml` are accessible to all workers when launched. 
+
+This has to be done before the actual `sbatch` allocation due to Julia inner stuff (see the [documentation](https://docs.julialang.org/en/v1/manual/environment-variables/#JULIA_DEPOT_PATH)).
+
+Then, it instantiates, resolves and precompile the project, once and for all workers through `prolog.jl`.
+
+`launcher.jl` just adds the workers, runs the code in `src/main.jl` and cleans up for safety.
 
