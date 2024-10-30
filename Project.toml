@@ -1,6 +1,5 @@
 [deps]
-DepotDelivery = "5c353f05-31b8-41b6-b09f-65e5456b8b1e"
+ClusterManagers = "34f1f09b-3a8b-5176-ab39-66d58a4d544e"
 JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
 Quantica = "ae5ea0c6-3f5e-46a2-bc28-a7c4c7a4773c"
-SlurmClusterManager = "c82cd089-7bf7-41d7-976b-6b5d413cbe0a"

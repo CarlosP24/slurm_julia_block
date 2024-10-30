@@ -12,19 +12,22 @@
 # script_path = read(pipeline(scontrol_cmd, awk_cmd), String) |> strip |> dirname
 
 ## Julia setup
+script_path = ENV["SLURM_SUBMIT_DIR"]
+available_workers = parse(Int, ENV["SLURM_NTASKS"])
+
 using Pkg
 Pkg.resolve()
 Pkg.instantiate()
 
 using DepotDelivery: build
-script_path = ENV["SLURM_SUBMIT_DIR"]
-path = build(script_path; platform = Base.BinaryPlatforms.HostPlatform()
-)
-using Distributed, SlurmClusterManager
-addprocs(SlurmManager())
-@everywhere include("$path/config/depot_startup.jl")
-## Run code
-include("$(script_path)/src/main.jl")
 
+using Distributed, ClusterManagers
+addprocs_slurm(available_workers)
+## Run code
+#include("$(script_path)/src/main.jl")
+@everywhere using Sockets
+hostnames = [@spawn gethostname() for _ in 1:nworkers()]
+results = fetch.(hostnames)
+println("Hostnames of workers: ", results)
 ## Clean up
 rmprocs(workers()...)
