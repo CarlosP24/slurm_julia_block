@@ -18,8 +18,8 @@ script_path = ENV["SLURM_SUBMIT_DIR"]
 #run(`mkdir -p $(depot_path)`)
 #ENV["JULIA_DEPOT_PATH"] = depot_path
 using Pkg
-Pkg.resolve()
 Pkg.instantiate()
+Pkg.resolve()
 Pkg.precompile()
 
 using Distributed, SlurmClusterManager
