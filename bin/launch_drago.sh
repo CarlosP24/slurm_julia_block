@@ -10,5 +10,5 @@ sbatch <<EOT
 #SBATCH --output="logs/%j.out"
 #SBATCH --job-name="${PWD##*/}"
 
-julia --project bin/launcher.jl
+julia --project bin/launcher.jl "$@"
 EOT
