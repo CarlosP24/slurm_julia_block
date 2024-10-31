@@ -19,11 +19,11 @@ sbatch <<EOT
 #SBATCH --mem-per-cpu=2G
 #SBATCH --output="slurm.out/%j.out"
 
-julia --project launcher.jl
+julia --project launcher.jl "$@"
 EOT
 `````
 
-We just need to do `bash launch_cluster.sh` in an access node.
+We just need to do `bash bin/launch_cluster.sh` in an access node. All command line arguments we give here are passed to `main.jl`.
 
 ## Hows and whys
 `prolog.sh` sets up the necessary julia env variables. It points the `JULIA_DEPOT_PATH` and `JULIA_PROJECT` to a common place for all nodes, so the precompiled files and `Manifest.toml` are accessible to all workers when launched. 
