@@ -6,4 +6,4 @@ using JLD2
 end
 ## Run 
 LDOS = mwe()
-save("LDOS.jld2", "LDOS", LDOS)
+save("data/LDOS.jld2", "LDOS", LDOS)
