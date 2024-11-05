@@ -7,10 +7,10 @@ function ensure_package(url::String, pkg_name::String)
     
     if isfile(project_file)
         project_data = TOML.parsefile(project_file)
-        
         # Check if package is in Project.toml
         if haskey(project_data["deps"], pkg_name)
-            println("$pkg_name found in Project.toml. Ensuring it is added from URL...")
+            println("$pkg_name found in Project.toml.")
+            # Check if the package is already installed
             Pkg.add(url = url)
         else
             println("$pkg_name is not listed in Project.toml, skipping addition.")
@@ -21,8 +21,6 @@ function ensure_package(url::String, pkg_name::String)
 end
 
 function setup_environment()
-    # Ensure FullShell.jl is added only if listed in Project.toml
-    ensure_package("https://github.com/CarlosP24/FullShell.jl.git", "FullShell")
 
     # Proceed with instantiation, resolve, and precompile as before
     try
@@ -33,11 +31,14 @@ function setup_environment()
         println("Attempting to resolve dependencies...")
 
         try
+            # Ensure non-registered package is added only if listed in Project.toml and not installed
+            ensure_package("https://github.com/CarlosP24/FullShell.jl.git", "FullShell")
             Pkg.resolve()
             println("Dependencies resolved. Re-attempting instantiation...")
             Pkg.instantiate()
         catch resolve_error
-            println("Resolve also failed. Check Project.toml and Manifest.toml files.")
+            println("Resolve also failed. Check Project.toml and Manifest.toml files.", resolve_error)
+            exit(1)
             return
         end
     end
@@ -48,8 +49,8 @@ function setup_environment()
 end
 
 # Run the setup process
-try
+try 
     setup_environment()
-catch e
-    exit(1)  # Explicitly set non-zero exit code
+catch
+    exit(1)
 end
