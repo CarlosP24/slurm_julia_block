@@ -8,3 +8,8 @@ export JULIA_DEPOT_PATH="$depot_path"
 export JULIA_PROJECT="$script_dir/.."
 
 julia --project "$script_dir/prologue.jl"
+
+if [ $? -ne 0 ]; then
+  echo "prologue.jl failed."
+  exit 1
+fi

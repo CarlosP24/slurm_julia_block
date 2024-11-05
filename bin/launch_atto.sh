@@ -1,5 +1,8 @@
 #!/bin/bash
 source config/prologue.sh
+if [ $? -ne 0 ]; then
+  exit 1
+fi
 sbatch <<EOT
 #!/bin/bash
 ## Slurm header
