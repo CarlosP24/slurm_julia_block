@@ -7,16 +7,15 @@ fi
 sbatch --export=ALL <<EOT
 #!/bin/bash
 ## Slurm header
-#SBATCH --partition=esbirro
-#SBATCH --ntasks-per-node=32
-#SBATCH --nodes=2
-#SBATCH --exclude=es8
+#SBATCH --ntasks-per-node=64
+#SBATCH --nodes=4
 #SBATCH --cpus-per-task=1
-##SBATCH --mem-per-cpu=2G
+#SBATCH --mem-per-cpu=2G
+#SBATCH --time=7-00:00:00
 #SBATCH --output="logs/%A_%a.out"
 #SBATCH --job-name="${PWD##*/}_$ARRAY_SIZE"
 #SBATCH --mail-user=carlos.paya@csic.es
-#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-type=BEGIN,END,FAIL,TIME_LIMIT_80
 #SBATCH --array=1-$ARRAY_SIZE
 
 # Deserialize
@@ -28,5 +27,4 @@ echo "Running \$PARAM"
 
 # Run the job
 julia --project bin/launcher.jl "\$PARAM"
-
 EOT
