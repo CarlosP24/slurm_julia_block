@@ -17,7 +17,7 @@ export JULIAUP_CHANNEL=1.11.1
 
 if ! juliaup status | grep " $JULIAUP_CHANNEL "; then
   echo "Julia version $JULIAUP_CHANNEL not installed. Installing now..."
-  juliaup install "$JULIAUP_CHANNEL"
+  juliaup add "$JULIAUP_CHANNEL"
 fi 
 
 julia --project "$script_dir/prologue.jl"
