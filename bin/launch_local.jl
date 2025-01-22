@@ -7,7 +7,7 @@ addprocs(8)
 end 
 
 ## Run code
-include("src/main.jl")
+include("../src/main.jl")
 
 ## Clean up
 rmprocs(workers()...)
