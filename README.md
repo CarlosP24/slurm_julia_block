@@ -15,8 +15,13 @@ Apart from this, the code can be written in the same way as it is done for singl
 `config/prologue.jl` is responsible for instantiating the project and creating `./julia_depot`, where all precompiled code resides. If there are non-registered packages or a non-published GitHub branch is needed, they must be explicitly added through `ensure_package` and `ensure_package_branch`. For now, this has to be directly edited in `prologue.jl`.
 
 
-### Launchers
-Code is launched to a Slurm cluster through a bash script in the `bin` directory. This script contains the necessary `#SBATCH` flags, so it must be modified for each cluster and calculation. For example:
+### Makefile
+Code deployment and launch is managed through a Makefile:
+`````
+$ make ARG=<argument> CLUSTER=<cluster_name> run
+`````
+deploys and runs the code.
+Code is launched to a Slurm cluster through a bash script created by the Makefile with the configuration parameters given in `config/clusters.yaml`. It looks like this:
 
 `````
 #!/bin/bash
@@ -42,11 +47,10 @@ julia --project bin/launcher.jl "\$PARAM"
 
 EOT
 `````
-The launcher can be given a list of command line parameters or a plain text file where each line is a parameter. A Slurm array is created, where each job takes one of those parameters and passes it to `main.jl`. For example:
-`````
-$ bash bin/launch_cluster.sh param1 param2
-`````
-will launch two jobs in an array, one with `param1` as the argument for `main.jl` and the other with `param2`.
+If the argument in make is a textfile, a Slurm array is created, where each job takes one of those parameters and passes it to `main.jl`.
+
+## Interaction
+The launcher keeps the session opened until all jobs are finished, reporting on their status and printing the output of each job on the local terminal. If this process is exited, the slurm job continues unless its cancelled manually.
 
 ## Key features
 The primary goal of this code is to avoid precompilation on each node and provide a lighter user interface. To achieve this, a `./julia_depot` directory is created in the project directory. Slurm shares this directory with all nodes, so precompilation is performed only once. The `Manifest.toml` file is also shared in the same way.
