@@ -2,7 +2,6 @@ esbirro:
   short: es1
   host: es1.icmm.csic.es
   path: /local/cap
-  launcher: bin/launcher.sh
   partition: esbirro
   ntasks_per_node: 32
   nodes: 7
@@ -16,7 +15,6 @@ atto:
   short: atto
   host: atto.icmm.csic.es
   path: /home/paya
-  launcher: bin/launcher.sh
   partition: most
   ntasks_per_node: 196
   nodes: 2
@@ -30,7 +28,6 @@ cesga:
   short: cesga
   host: ft3.cesga.es
   path: /home/csic/toq/cph
-  launcher: bin/launcher.sh
   partition: long
   ntasks: 400
   cpus_per_task: 1
@@ -43,8 +40,7 @@ drago:
   short: drago
   host: drago.csic.es
   path: /lustre/home/icmm/cpaya
-  launcher: bin/launcher.sh
-  partition: drago
+  partition: long
   ntasks_per_node: 64
   nodes: 4
   cpus_per_task: 1
