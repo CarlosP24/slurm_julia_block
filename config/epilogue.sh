@@ -8,6 +8,7 @@ fi
 
 # Check if job is running
 sleep 1
+KNOWN_STATES="RUNNING PENDING COMPLETED FAILED CANCELLED TIMEOUT PREEMPTED SUSPENDED NODE_FAIL OUT_OF_MEMORY CONFIGURING COMPLETING RESIZING REQUEUED REQUEUING SPECIAL_EXIT BOOT_FAIL DEAD NODE_FAIL SIGNALING STAGE_OUT STOPPED SUSPENDED SYSTEM FAILURE"
 while true; do
     STATE=$(sacct -j "$JOB_ID" --format=State --noheader | awk 'NR==1{print $1}')
     if [ "$STATE" = "RUNNING" ]; then
@@ -16,9 +17,12 @@ while true; do
     elif [ "$STATE" = "PENDING" ]; then
         echo "Job $JOB_ID is PENDING. Checking again in 30 seconds..."
         sleep 30
-    else
+    elif echo "$KNOWN_STATES" | grep -qw "$STATE"; then
         echo "Job $JOB_ID is in state: $STATE. Exiting with error."
         exit 2
+    else
+        echo "Job $JOB_ID is in unknown state: $STATE. Checking again in 5 seconds..."
+        sleep 5
     fi
 done
 
