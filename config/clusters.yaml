@@ -2,6 +2,7 @@ esbirro:
   short: es1
   host: es1.icmm.csic.es
   path: /local/cap
+  launcher: bin/launcher.sh
   partition: esbirro
   ntasks_per_node: 32
   nodes: 7
@@ -15,6 +16,7 @@ atto:
   short: atto
   host: atto.icmm.csic.es
   path: /home/paya
+  launcher: bin/launcher.sh
   partition: most
   ntasks_per_node: 196
   nodes: 2
@@ -28,10 +30,12 @@ cesga:
   short: cesga
   host: ft3.cesga.es
   path: /home/csic/toq/cph
+  launcher: bin/launcher.sh
   partition: long
-  ntasks: 400
+  ntasks: 100
   cpus_per_task: 1
   mem_per_cpu: 2G
+  time: 24:00:00
   mail_user: carlos.paya@csic.es
   mail_type: BEGIN,END,FAIL,TIME_LIMIT_80
   # Add any other SBATCH options needed for this cluster
@@ -40,9 +44,10 @@ drago:
   short: drago
   host: drago.csic.es
   path: /lustre/home/icmm/cpaya
-  partition: long
-  ntasks_per_node: 64
-  nodes: 4
+  launcher: bin/launcher.sh
+  partition: generic
+  ntasks_per_node: 48
+  nodes: 1
   cpus_per_task: 1
   mem_per_cpu: 2G
   mail_user: carlos.paya@csic.es

@@ -74,6 +74,9 @@ gen_launcher:
 	@if yq e '.${CLUSTER}.mem_per_cpu' $(CLUSTERS_CFG) | grep -vq 'null'; then \
 		echo "#SBATCH --mem-per-cpu=$$(yq e '.${CLUSTER}.mem_per_cpu' $(CLUSTERS_CFG))" >> bin/launcher.sh; \
 	fi
+	@if yq e '.${CLUSTER}.time' $(CLUSTERS_CFG) | grep -vq 'null'; then \
+		echo "#SBATCH --time=$$(yq e '.${CLUSTER}.time' $(CLUSTERS_CFG))" >> bin/launcher.sh; \
+	fi
 	@echo "#SBATCH --output=\"logs/%A_%a.out\"" >> bin/launcher.sh
 	@echo "#SBATCH --job-name=\"\$$*\"" >> bin/launcher.sh
 	@if yq e '.${CLUSTER}.mail_user' $(CLUSTERS_CFG) | grep -vq 'null'; then \
