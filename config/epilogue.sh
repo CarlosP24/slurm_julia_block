@@ -18,7 +18,7 @@ while true; do
     elif [ "$STATE" = "PENDING" ]; then
         echo "Job $JOB_ID is PENDING. REASON: $REASON . Checking again in 30 seconds..."
         sleep 30
-    elif echo "$KNOWN_STATES" | grep -qw "$STATE"; then
+    elif echo "$KNOWN_STATES" | grep -Eq "$(echo $STATE | sed 's/ /|/g')"; then
         echo "Job $JOB_ID is in state: $STATE. Exiting with error."
         exit 2
     else
