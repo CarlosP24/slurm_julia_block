@@ -11,11 +11,12 @@ sleep 1
 KNOWN_STATES="RUNNING PENDING COMPLETED FAILED CANCELLED TIMEOUT PREEMPTED SUSPENDED NODE_FAIL OUT_OF_MEMORY CONFIGURING COMPLETING RESIZING REQUEUED REQUEUING SPECIAL_EXIT BOOT_FAIL DEAD NODE_FAIL SIGNALING STAGE_OUT STOPPED SUSPENDED SYSTEM FAILURE"
 while true; do
     STATE=$(sacct -j "$JOB_ID" --format=State --noheader | awk 'NR==1{print $1}')
+    REASON=$(squeue -j "$JOB_ID" -h -o "%r")
     if [ "$STATE" = "RUNNING" ]; then
         echo "Job $JOB_ID is RUNNING."
         break
     elif [ "$STATE" = "PENDING" ]; then
-        echo "Job $JOB_ID is PENDING. Checking again in 30 seconds..."
+        echo "Job $JOB_ID is PENDING. REASON: $REASON . Checking again in 30 seconds..."
         sleep 30
     elif echo "$KNOWN_STATES" | grep -qw "$STATE"; then
         echo "Job $JOB_ID is in state: $STATE. Exiting with error."
@@ -60,4 +61,4 @@ while true; do
     fi
 done
 
-rm -f logs/${JOB_ID}_*.out
+#rm -f logs/${JOB_ID}_*.out
