@@ -5,14 +5,29 @@ if [ -z "$JOB_ID" ]; then
     echo "Usage: $0 <job_id>"
     exit 1
 fi
+# a failed sbatch leaves its error text here instead of an id: don't poll squeue forever
+if ! [[ "$JOB_ID" =~ ^[0-9]+$ ]]; then
+    echo "Submission failed (no job id): $JOB_ID"
+    exit 2
+fi
 
 # Check if job is running
 sleep 1
 KNOWN_STATES="RUNNING PENDING COMPLETED FAILED CANCELLED TIMEOUT PREEMPTED SUSPENDED NODE_FAIL OUT_OF_MEMORY CONFIGURING COMPLETING RESIZING REQUEUED REQUEUING SPECIAL_EXIT BOOT_FAIL DEAD NODE_FAIL SIGNALING STAGE_OUT STOPPED SUSPENDED SYSTEM FAILURE"
+MISSING=0
 while true; do
-    STATE=$(squeue -j "$JOB_ID" -h -o "%T" | awk 'NR==1{print $1}')
-    REASON=$(squeue -j "$JOB_ID" -h -o "%r")
-    if [ "$STATE" = "RUNNING" ]; then
+    STATE=$(squeue -j "$JOB_ID" -h -o "%T" 2>/dev/null | awk 'NR==1{print $1}')
+    REASON=$(squeue -j "$JOB_ID" -h -o "%r" 2>/dev/null)
+    if [ -z "$STATE" ]; then
+        # not in the queue: either not listed yet (just submitted) or already finished
+        MISSING=$((MISSING + 1))
+        if [ $MISSING -ge 3 ]; then
+            echo "Job $JOB_ID is no longer in the queue (finished). Last log lines:"
+            for f in logs/${JOB_ID}_*.out; do [ -f "$f" ] && echo "== $f" && tail -n 5 "$f"; done
+            exit 0
+        fi
+        sleep 5
+    elif [ "$STATE" = "RUNNING" ]; then
         echo "Job $JOB_ID is RUNNING."
         break
     elif [ "$STATE" = "PENDING" ]; then
